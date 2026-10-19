@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -6,94 +5,76 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VELORA HOUSE | Style Meets You</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#0b0b0b;color:#fff;font-family:Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:#0b0b0b;color:#fff;font-family:Arial,sans-serif}
 header{padding:22px 16px;text-align:center;background:#111;border-bottom:1px solid #c99b36}
-.logo{font-family:Georgia,serif;color:#f4c65e;font-size:30px;font-weight:bold}
-.tag{color:#d7b76a;letter-spacing:4px;font-size:11px;margin-top:5px}
-nav{display:flex;justify-content:center;gap:20px;padding:14px;background:#151515;flex-wrap:wrap}
-nav a{color:#f4c65e;text-decoration:none}
-.hero{padding:55px 20px;text-align:center;background:linear-gradient(140deg,#17120a,#050505)}
-.hero h1{font-family:Georgia,serif;color:#f4c65e;font-size:34px}
-.hero p{color:#ddd;line-height:1.7}
-.btn{background:#f4c65e;color:#111;border:0;border-radius:7px;padding:12px 20px;font-weight:bold;cursor:pointer}
-section{padding:25px 15px}
-h2{color:#f4c65e}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.product{background:#181818;border:1px solid #3c301a;border-radius:10px;overflow:hidden;padding-bottom:14px}
-.product img{width:100%;height:145px;object-fit:cover;background:#292929}
-.product h3,.product p{margin:10px;font-size:14px}
-.price{color:#f4c65e;font-size:18px!important;font-weight:bold}
-.product button{margin-left:10px}
+.logo{font-family:Georgia,serif;color:#f4c65e;font-size:30px;font-weight:bold}.tag{color:#d7b76a;letter-spacing:4px;font-size:11px;margin-top:5px}
+nav{display:flex;justify-content:center;gap:20px;padding:14px;background:#151515;flex-wrap:wrap}nav a{color:#f4c65e;text-decoration:none}
+.hero{padding:55px 20px;text-align:center;background:linear-gradient(140deg,#17120a,#050505)}.hero h1{font-family:Georgia,serif;color:#f4c65e;font-size:34px}.hero p{color:#ddd;line-height:1.7}
+.btn{background:#f4c65e;color:#111;border:0;border-radius:7px;padding:12px 20px;font-weight:bold;cursor:pointer}.btn:disabled{opacity:.6;cursor:wait}
+section{padding:25px 15px}h2{color:#f4c65e}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.product{background:#181818;border:1px solid #3c301a;border-radius:10px;overflow:hidden;padding-bottom:14px}.product img{width:100%;height:145px;object-fit:cover;background:#292929}.product h3,.product p{margin:10px;font-size:14px}.price{color:#f4c65e;font-size:18px!important;font-weight:bold}.product button{margin-left:10px}
 footer{text-align:center;padding:25px;color:#d7b76a;border-top:1px solid #55421d}
-input,textarea{width:100%;padding:12px;margin:6px 0 12px;background:#171717;color:white;border:1px solid #6d572b;border-radius:6px}
-#cart{background:#171717;padding:15px;border-radius:10px}
+input,textarea{width:100%;padding:12px;margin:6px 0 12px;background:#171717;color:white;border:1px solid #6d572b;border-radius:6px;font:inherit}label{display:block;margin-top:6px}
+#cart{background:#171717;padding:15px;border-radius:10px;overflow-wrap:anywhere}#message{line-height:1.7;overflow-wrap:anywhere}.note{color:#ccc;font-size:13px;line-height:1.6}
+@media(min-width:700px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}section{max-width:1000px;margin:auto}form{max-width:650px}}
 </style>
 </head>
 <body>
-<header>
-<div class="logo">♛ VELORA HOUSE</div>
-<div class="tag">STYLE MEETS YOU</div>
-</header>
-<nav>
-<a href="#home">হোম</a>
-<a href="#shop">শপ</a>
-<a href="#cart">কার্ট (<span id="count">0</span>)</a>
-<a href="#contact">যোগাযোগ</a>
-</nav>
-<div class="hero" id="home">
-<h1>Discover Your Style</h1>
-<p>প্রিমিয়াম স্টাইল, আধুনিক ফ্যাশন<br>আপনার পছন্দের পণ্য কিনুন VELORA HOUSE থেকে।</p>
-<a href="#shop"><button class="btn">এখনই শপিং করুন →</button></a>
-</div>
-<section id="shop">
-<h2>✦ আমাদের কালেকশন</h2>
-<div class="grid" id="products"></div>
-</section>
-<section>
-<h2>🛒 আপনার কার্ট</h2>
-<div id="cart">আপনার কার্ট খালি।</div>
-</section>
-<section id="contact">
-<h2>অর্ডার করুন — Cash on Delivery</h2>
-<p>আপনার তথ্য দিয়ে অর্ডার জমা দিন।</p>
+<header><div class="logo">♛ VELORA HOUSE</div><div class="tag">STYLE MEETS YOU</div></header>
+<nav><a href="#home">হোম</a><a href="#shop">শপ</a><a href="#cart">কার্ট (<span id="count">0</span>)</a><a href="#contact">অর্ডার</a></nav>
+<div class="hero" id="home"><h1>Discover Your Style</h1><p>প্রিমিয়াম স্টাইল, আধুনিক ফ্যাশন<br>আপনার পছন্দের পণ্য কিনুন VELORA HOUSE থেকে।</p><a href="#shop"><button class="btn">এখনই শপিং করুন →</button></a></div>
+<section id="shop"><h2>✦ আমাদের কালেকশন</h2><div class="grid" id="products"></div></section>
+<section><h2>🛒 আপনার কার্ট</h2><div id="cart">আপনার কার্ট খালি।</div></section>
+<section id="contact"><h2>অর্ডার করুন — Cash on Delivery</h2><p>আপনার তথ্য দিয়ে অর্ডার জমা দিন।</p>
 <form id="orderForm">
-<label>আপনার নাম</label>
-<input id="customer" required placeholder="সম্পূর্ণ নাম">
-<label>মোবাইল নম্বর</label>
-<input id="phone" required type="tel" placeholder="01XXXXXXXXX">
-<label>ডেলিভারি ঠিকানা</label>
-<textarea id="address" required placeholder="আপনার সম্পূর্ণ ঠিকানা"></textarea>
-<button class="btn" type="submit">অর্ডার জমা দিন</button>
-</form>
-<p id="message"></p>
-</section>
+<label for="customer">আপনার নাম</label><input id="customer" required minlength="2" maxlength="100" placeholder="সম্পূর্ণ নাম" autocomplete="name">
+<label for="phone">মোবাইল নম্বর</label><input id="phone" required type="tel" maxlength="20" placeholder="01XXXXXXXXX" autocomplete="tel">
+<label for="district">জেলা</label><input id="district" required maxlength="100" placeholder="আপনার জেলার নাম" autocomplete="address-level1">
+<label for="area">এলাকা / থানা</label><input id="area" required maxlength="150" placeholder="এলাকা বা থানার নাম">
+<label for="address">সম্পূর্ণ ডেলিভারি ঠিকানা</label><textarea id="address" required minlength="5" maxlength="500" placeholder="বাসা/রোড/গ্রাম এবং অন্যান্য ঠিকানা" autocomplete="street-address"></textarea>
+<p class="note">পেমেন্ট: Cash on Delivery। ডেলিভারি চার্জ বর্তমানে ৳০ রাখা হয়েছে—ব্যবসার প্রকৃত চার্জ অনুযায়ী কোডে পরিবর্তন করুন।</p>
+<button class="btn" id="submitBtn" type="submit">অর্ডার জমা দিন</button></form><p id="message" role="status" aria-live="polite"></p></section>
 <footer>© 2026 VELORA HOUSE · STYLE MEETS YOU</footer>
 <script>
-const items=[
+"use strict";
+/* Supabase Dashboard থেকে Publishable Key বসান। sb_secret_ key কখনো দেবেন না। */
+const SUPABASE_URL = "https://laqewbajijpayguugdtp.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Oie1MHEfe14z250M2u7UbA_C-tOy6D_";
+const DELIVERY_FEE = 0;
+const items = [
 {name:"Premium T-Shirt",price:550,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500"},
 {name:"Classic Shirt",price:850,img:"https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500"},
 {name:"Luxury Watch",price:1200,img:"https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500"},
 {name:"Stylish Sunglasses",price:750,img:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500"}
 ];
-let cart=[];
-function showProducts(){
-document.getElementById("products").innerHTML=items.map((p,i)=>`<div class="product"><img src="${p.img}" alt="${p.name}"><h3>${p.name}</h3><p class="price">৳ ${p.price}</p><button class="btn" onclick="add(${i})">কার্টে যোগ করুন</button></div>`).join("");
-}
-function add(i){cart.push(items[i]);renderCart()}
-function renderCart(){
-document.getElementById("count").textContent=cart.length;
-document.getElementById("cart").innerHTML=cart.length?cart.map((p,i)=>`<p>${p.name} — ৳${p.price} <button onclick="removeItem(${i})">✕</button></p>`).join("")+`<h3>মোট: ৳${cart.reduce((s,p)=>s+p.price,0)}</h3>`:"আপনার কার্ট খালি।";
-}
+let cart=[];let submitting=false;const $=id=>document.getElementById(id);const money=n=>"৳"+Number(n).toLocaleString("en-US");
+function showProducts(){$("products").innerHTML=items.map((p,i)=>`<div class="product"><img src="${p.img}" alt="${p.name}" loading="lazy"><h3>${p.name}</h3><p class="price">${money(p.price)}</p><button class="btn" type="button" onclick="add(${i})">কার্টে যোগ করুন</button></div>`).join("")}
+function add(i){if(!items[i])return;cart.push(items[i]);renderCart();$("message").textContent=""}
 function removeItem(i){cart.splice(i,1);renderCart()}
-document.getElementById("orderForm").addEventListener("submit",function(e){
-e.preventDefault();
-if(!cart.length){document.getElementById("message").textContent="আগে কার্টে পণ্য যোগ করুন।";return;}
-const order={name:document.getElementById("customer").value,phone:document.getElementById("phone").value,address:document.getElementById("address").value,items:cart.map(p=>p.name),total:cart.reduce((s,p)=>s+p.price,0),payment:"Cash on Delivery"};
-const old=JSON.parse(localStorage.getItem("velora_orders")||"[]");
-old.push(order);localStorage.setItem("velora_orders",JSON.stringify(old));
-document.getElementById("message").textContent="ধন্যবাদ! এই ডেমোতে অর্ডারটি এই ব্রাউজারেই সংরক্ষিত হয়েছে। এটি এখনো দোকানের মালিকের কাছে পাঠানো হয়নি।";
+function renderCart(){
+$("count").textContent=cart.length;if(!cart.length){$("cart").textContent="আপনার কার্ট খালি।";return}
+const subtotal=cart.reduce((s,p)=>s+p.price,0);
+$("cart").innerHTML=cart.map((p,i)=>`<p>${p.name} — ${money(p.price)} <button type="button" onclick="removeItem(${i})" aria-label="পণ্য সরান">✕</button></p>`).join("")+`<p>পণ্যের মোট: <strong>${money(subtotal)}</strong></p><p>ডেলিভারি চার্জ: <strong>${money(DELIVERY_FEE)}</strong></p><h3>সর্বমোট: ${money(subtotal+DELIVERY_FEE)}</h3>`;
+}
+$("orderForm").addEventListener("submit",async function(e){
+e.preventDefault();if(submitting)return;if(!cart.length){$("message").textContent="আগে কার্টে পণ্য যোগ করুন।";return}
+if(!SUPABASE_PUBLISHABLE_KEY||SUPABASE_PUBLISHABLE_KEY==="PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE"){$("message").textContent="Supabase Publishable Key বসানো হয়নি। কোডের সেটিংস অংশে Key বসান।";return}
+const customerName=$("customer").value.trim(),phone=$("phone").value.trim(),district=$("district").value.trim(),area=$("area").value.trim(),address=$("address").value.trim();
+const phoneDigits=phone.replace(/\s/g,"");
+if(customerName.length<2||customerName.length>100){$("message").textContent="সঠিক নাম লিখুন।";return}
+if(phoneDigits.length<11||phoneDigits.length>14){$("message").textContent="সঠিক মোবাইল নম্বর লিখুন।";return}
+if(!district||!area||address.length<5){$("message").textContent="জেলা, এলাকা ও সম্পূর্ণ ঠিকানা পূরণ করুন।";return}
+const subtotal=cart.reduce((s,p)=>s+p.price,0);
+const order={customer_name:customerName,phone:phone,district:district,area:area,full_address:address,items:cart.map(p=>({name:p.name,price:p.price,quantity:1})),subtotal:subtotal,delivery_fee:DELIVERY_FEE,total:subtotal+DELIVERY_FEE,payment_method:"Cash on Delivery",status:"Pending"};
+submitting=true;$("submitBtn").disabled=true;$("submitBtn").textContent="অর্ডার পাঠানো হচ্ছে...";$("message").textContent="আপনার অর্ডার জমা হচ্ছে, অপেক্ষা করুন।";
+try{
+const response=await fetch(SUPABASE_URL+"/rest/v1/orders",{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_PUBLISHABLE_KEY,"Authorization":"Bearer "+SUPABASE_PUBLISHABLE_KEY,"Prefer":"return=representation"},body:JSON.stringify(order)});
+if(!response.ok){const details=await response.text();console.error("Supabase error:",response.status,details);throw new Error("অর্ডার জমা হয়নি। Supabase policy বা তথ্য পরীক্ষা করুন।")}
+const result=await response.json(),saved=result&&result[0];
+$("message").textContent="ধন্যবাদ! অর্ডার সফলভাবে জমা হয়েছে।"+(saved&&saved.order_number?" অর্ডার নম্বর: "+saved.order_number+"।":"")+" পেমেন্ট: Cash on Delivery।";
 this.reset();cart=[];renderCart();
+}catch(error){console.error(error);$("message").textContent=error.message==="Failed to fetch"?"সার্ভারে সংযোগ করা যায়নি। ইন্টারনেট ও Supabase সেটিংস পরীক্ষা করুন।":(error.message||"অর্ডার জমা হয়নি। আবার চেষ্টা করুন।")}
+finally{submitting=false;$("submitBtn").disabled=false;$("submitBtn").textContent="অর্ডার জমা দিন"}
 });
 showProducts();renderCart();
 </script>
