@@ -22,61 +22,115 @@ input,textarea{width:100%;padding:12px;margin:6px 0 12px;background:#171717;colo
 <body>
 <header><div class="logo">♛ VELORA HOUSE</div><div class="tag">STYLE MEETS YOU</div></header>
 <nav><a href="#home">হোম</a><a href="#shop">শপ</a><a href="#cart">কার্ট (<span id="count">0</span>)</a><a href="#contact">অর্ডার</a></nav>
-<div class="hero" id="home"><h1>Discover Your Style</h1><p>প্রিমিয়াম স্টাইল, আধুনিক ফ্যাশন<br>আপনার পছন্দের পণ্য কিনুন VELORA HOUSE থেকে।</p><a href="#shop"><button class="btn">এখনই শপিং করুন →</button></a></div>
+<div class="hero" id="home"><h1>Discover Your Style</h1><p>প্রিমিয়াম স্টাইল, আধুনিক ফ্যাশন<br>আপনার পছন্দের পণ্য কিনুন VELORA HOUSE থেকে।</p><a href="#shop"><button class="btn">এখনই শপিং করুন →</button></a></div>
 <section id="shop"><h2>✦ আমাদের কালেকশন</h2><div class="grid" id="products"></div></section>
 <section><h2>🛒 আপনার কার্ট</h2><div id="cart">আপনার কার্ট খালি।</div></section>
-<section id="contact"><h2>অর্ডার করুন — Cash on Delivery</h2><p>আপনার তথ্য দিয়ে অর্ডার জমা দিন।</p>
+<section id="contact"><h2>অর্ডার করুন — Cash on Delivery</h2><p>আপনার তথ্য দিয়ে অর্ডার জমা দিন।</p>
 <form id="orderForm">
 <label for="customer">আপনার নাম</label><input id="customer" required minlength="2" maxlength="100" placeholder="সম্পূর্ণ নাম" autocomplete="name">
 <label for="phone">মোবাইল নম্বর</label><input id="phone" required type="tel" maxlength="20" placeholder="01XXXXXXXXX" autocomplete="tel">
 <label for="district">জেলা</label><input id="district" required maxlength="100" placeholder="আপনার জেলার নাম" autocomplete="address-level1">
 <label for="area">এলাকা / থানা</label><input id="area" required maxlength="150" placeholder="এলাকা বা থানার নাম">
 <label for="address">সম্পূর্ণ ডেলিভারি ঠিকানা</label><textarea id="address" required minlength="5" maxlength="500" placeholder="বাসা/রোড/গ্রাম এবং অন্যান্য ঠিকানা" autocomplete="street-address"></textarea>
-<p class="note">পেমেন্ট: Cash on Delivery। ডেলিভারি চার্জ বর্তমানে ৳০ রাখা হয়েছে—ব্যবসার প্রকৃত চার্জ অনুযায়ী কোডে পরিবর্তন করুন।</p>
+<p class="note">পেমেন্ট: Cash on Delivery। ডেলিভারি চার্জ বর্তমানে ৳০ রাখা হয়েছে—ব্যবসার প্রকৃত চার্জ অনুযায়ী কোডে পরিবর্তন করুন।</p>
 <button class="btn" id="submitBtn" type="submit">অর্ডার জমা দিন</button></form><p id="message" role="status" aria-live="polite"></p></section>
 <footer>© 2026 VELORA HOUSE · STYLE MEETS YOU</footer>
+
 <script>
 "use strict";
 /* Supabase Dashboard থেকে Publishable Key বসান। sb_secret_ key কখনো দেবেন না। */
 const SUPABASE_URL = "https://laqewbajijpayguugdtp.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+const SUPABASE_PUBLISHABLE_KEY = "Publishable (anon) key";
 const DELIVERY_FEE = 0;
-const items = [
-{name:"Premium T-Shirt",price:550,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500"},
-{name:"Classic Shirt",price:850,img:"https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500"},
-{name:"Luxury Watch",price:1200,img:"https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500"},
-{name:"Stylish Sunglasses",price:750,img:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500"}
-];
-let cart=[];let submitting=false;const $=id=>document.getElementById(id);const money=n=>"৳"+Number(n).toLocaleString("en-US");
-function showProducts(){$("products").innerHTML=items.map((p,i)=>`<div class="product"><img src="${p.img}" alt="${p.name}" loading="lazy"><h3>${p.name}</h3><p class="price">${money(p.price)}</p><button class="btn" type="button" onclick="add(${i})">কার্টে যোগ করুন</button></div>`).join("")}
+
+let items = []; // ডেটাবেস থেকে পণ্য এখানে আসবে
+let cart = [];
+let submitting = false;
+
+const $ = id => document.getElementById(id);
+const money = n => "৳" + Number(n).toLocaleString("en-US");
+
+// Supabase থেকে পণ্য আনার ফাংশন
+async function fetchProducts() {
+  if(!SUPABASE_PUBLISHABLE_KEY || SUPABASE_PUBLISHABLE_KEY === "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE") {
+    $("products").innerHTML = "<p style='grid-column: 1 / -1;'>Supabase Publishable Key বসানো হয়নি। কোডে Key বসান।</p>";
+    return;
+  }
+  
+  try {
+    const response = await fetch(SUPABASE_URL + "/rest/v1/products?select=*", {
+      method: "GET",
+      headers: {
+        "apikey": SUPABASE_PUBLISHABLE_KEY,
+        "Authorization": "Bearer " + SUPABASE_PUBLISHABLE_KEY
+      }
+    });
+    
+    if (!response.ok) throw new Error("পণ্য লোড করা যায়নি।");
+    
+    const data = await response.json();
+    if (data && data.length > 0) {
+      items = data; 
+      showProducts(); 
+    } else {
+      $("products").innerHTML = "<p style='grid-column: 1 / -1;'>কোনো পণ্য পাওয়া যায়নি।</p>";
+    }
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    $("products").innerHTML = "<p style='grid-column: 1 / -1;'>পণ্য লোড করতে সমস্যা হচ্ছে। ইন্টারনেট বা ডেটাবেস চেক করুন।</p>";
+  }
+}
+
+function showProducts(){
+  $("products").innerHTML = items.map((p,i) => 
+    `<div class="product"><img src="${p.img}" alt="${p.name}" loading="lazy"><h3>${p.name}</h3><p class="price">${money(p.price)}</p><button class="btn" type="button" onclick="add(${i})">কার্টে যোগ করুন</button></div>`
+  ).join("");
+}
+
 function add(i){if(!items[i])return;cart.push(items[i]);renderCart();$("message").textContent=""}
 function removeItem(i){cart.splice(i,1);renderCart()}
+
 function renderCart(){
-$("count").textContent=cart.length;if(!cart.length){$("cart").textContent="আপনার কার্ট খালি।";return}
-const subtotal=cart.reduce((s,p)=>s+p.price,0);
-$("cart").innerHTML=cart.map((p,i)=>`<p>${p.name} — ${money(p.price)} <button type="button" onclick="removeItem(${i})" aria-label="পণ্য সরান">✕</button></p>`).join("")+`<p>পণ্যের মোট: <strong>${money(subtotal)}</strong></p><p>ডেলিভারি চার্জ: <strong>${money(DELIVERY_FEE)}</strong></p><h3>সর্বমোট: ${money(subtotal+DELIVERY_FEE)}</h3>`;
+  $("count").textContent=cart.length;
+  if(!cart.length){$("cart").textContent="আপনার কার্ট খালি।";return}
+  const subtotal=cart.reduce((s,p)=>s+p.price,0);
+  $("cart").innerHTML=cart.map((p,i)=>`<p>${p.name} — ${money(p.price)} <button type="button" onclick="removeItem(${i})" aria-label="পণ্য সরান" style="background:none;border:none;color:#f4c65e;font-size:16px;cursor:pointer;">✕</button></p>`).join("")+`<p>পণ্যের মোট: <strong>${money(subtotal)}</strong></p><p>ডেলিভারি চার্জ: <strong>${money(DELIVERY_FEE)}</strong></p><h3>সর্বমোট: ${money(subtotal+DELIVERY_FEE)}</h3>`;
 }
+
 $("orderForm").addEventListener("submit",async function(e){
-e.preventDefault();if(submitting)return;if(!cart.length){$("message").textContent="আগে কার্টে পণ্য যোগ করুন।";return}
-if(!SUPABASE_PUBLISHABLE_KEY||SUPABASE_PUBLISHABLE_KEY==="PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE"){$("message").textContent="Supabase Publishable Key বসানো হয়নি। কোডের সেটিংস অংশে Key বসান।";return}
-const customerName=$("customer").value.trim(),phone=$("phone").value.trim(),district=$("district").value.trim(),area=$("area").value.trim(),address=$("address").value.trim();
-const phoneDigits=phone.replace(/\s/g,"");
-if(customerName.length<2||customerName.length>100){$("message").textContent="সঠিক নাম লিখুন।";return}
-if(phoneDigits.length<11||phoneDigits.length>14){$("message").textContent="সঠিক মোবাইল নম্বর লিখুন।";return}
-if(!district||!area||address.length<5){$("message").textContent="জেলা, এলাকা ও সম্পূর্ণ ঠিকানা পূরণ করুন।";return}
-const subtotal=cart.reduce((s,p)=>s+p.price,0);
-const order={customer_name:customerName,phone:phone,district:district,area:area,full_address:address,items:cart.map(p=>({name:p.name,price:p.price,quantity:1})),subtotal:subtotal,delivery_fee:DELIVERY_FEE,total:subtotal+DELIVERY_FEE,payment_method:"Cash on Delivery",status:"Pending"};
-submitting=true;$("submitBtn").disabled=true;$("submitBtn").textContent="অর্ডার পাঠানো হচ্ছে...";$("message").textContent="আপনার অর্ডার জমা হচ্ছে, অপেক্ষা করুন।";
-try{
-const response=await fetch(SUPABASE_URL+"/rest/v1/orders",{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_PUBLISHABLE_KEY,"Authorization":"Bearer "+SUPABASE_PUBLISHABLE_KEY,"Prefer":"return=representation"},body:JSON.stringify(order)});
-if(!response.ok){const details=await response.text();console.error("Supabase error:",response.status,details);throw new Error("অর্ডার জমা হয়নি। Supabase policy বা তথ্য পরীক্ষা করুন।")}
-const result=await response.json(),saved=result&&result[0];
-$("message").textContent="ধন্যবাদ! অর্ডার সফলভাবে জমা হয়েছে।"+(saved&&saved.order_number?" অর্ডার নম্বর: "+saved.order_number+"।":"")+" পেমেন্ট: Cash on Delivery।";
-this.reset();cart=[];renderCart();
-}catch(error){console.error(error);$("message").textContent=error.message==="Failed to fetch"?"সার্ভারে সংযোগ করা যায়নি। ইন্টারনেট ও Supabase সেটিংস পরীক্ষা করুন।":(error.message||"অর্ডার জমা হয়নি। আবার চেষ্টা করুন।")}
-finally{submitting=false;$("submitBtn").disabled=false;$("submitBtn").textContent="অর্ডার জমা দিন"}
+  e.preventDefault();
+  if(submitting)return;
+  if(!cart.length){$("message").textContent="আগে কার্টে পণ্য যোগ করুন।";return}
+  if(!SUPABASE_PUBLISHABLE_KEY||SUPABASE_PUBLISHABLE_KEY==="PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE"){$("message").textContent="Supabase Publishable Key বসানো হয়নি। কোডের সেটিংস অংশে Key বসান।";return}
+  
+  const customerName=$("customer").value.trim(),phone=$("phone").value.trim(),district=$("district").value.trim(),area=$("area").value.trim(),address=$("address").value.trim();
+  const phoneDigits=phone.replace(/\s/g,"");
+  
+  if(customerName.length<2||customerName.length>100){$("message").textContent="সঠিক নাম লিখুন।";return}
+  if(phoneDigits.length<11||phoneDigits.length>14){$("message").textContent="সঠিক মোবাইল নম্বর লিখুন।";return}
+  if(!district||!area||address.length<5){$("message").textContent="জেলা, এলাকা ও সম্পূর্ণ ঠিকানা পূরণ করুন।";return}
+  
+  const subtotal=cart.reduce((s,p)=>s+p.price,0);
+  const order={customer_name:customerName,phone:phone,district:district,area:area,full_address:address,items:cart.map(p=>({name:p.name,price:p.price,quantity:1})),subtotal:subtotal,delivery_fee:DELIVERY_FEE,total:subtotal+DELIVERY_FEE,payment_method:"Cash on Delivery",status:"Pending"};
+  
+  submitting=true;$("submitBtn").disabled=true;$("submitBtn").textContent="অর্ডার পাঠানো হচ্ছে...";$("message").textContent="আপনার অর্ডার জমা হচ্ছে, অপেক্ষা করুন।";
+  
+  try{
+    const response=await fetch(SUPABASE_URL+"/rest/v1/orders",{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_PUBLISHABLE_KEY,"Authorization":"Bearer "+SUPABASE_PUBLISHABLE_KEY,"Prefer":"return=representation"},body:JSON.stringify(order)});
+    if(!response.ok){const details=await response.text();console.error("Supabase error:",response.status,details);throw new Error("অর্ডার জমা হয়নি। Supabase policy বা তথ্য পরীক্ষা করুন।")}
+    const result=await response.json(),saved=result&&result[0];
+    $("message").textContent="ধন্যবাদ! অর্ডার সফলভাবে জমা হয়েছে।"+(saved&&saved.id?" অর্ডার আইডি: "+saved.id+"।":"")+" পেমেন্ট: Cash on Delivery।";
+    this.reset();cart=[];renderCart();
+  }catch(error){
+    console.error(error);$("message").textContent=error.message==="Failed to fetch"?"সার্ভারে সংযোগ করা যায়নি। ইন্টারনেট ও Supabase সেটিংস পরীক্ষা করুন।":(error.message||"অর্ডার জমা হয়নি। আবার চেষ্টা করুন।")
+  }finally{
+    submitting=false;$("submitBtn").disabled=false;$("submitBtn").textContent="অর্ডার জমা দিন"
+  }
 });
-showProducts();renderCart();
+
+// পেজ লোড হওয়ার সাথে সাথে এই দুটি ফাংশন চলবে
+fetchProducts(); 
+renderCart();
 </script>
 </body>
 </html>
